@@ -1,11 +1,5 @@
 from django.shortcuts import render
-
-# Create your views here.
-
-
-def index(request):
-    template_name = 'blog/index.html'
-    return render(request, template_name, {'posts': posts[::-1]})
+from django.http import HttpResponseNotFound
 
 
 posts = [
@@ -52,11 +46,23 @@ posts = [
 ]
 
 
+def index(request):
+    template_name = 'blog/index.html'
+    return render(request, template_name, {'posts': posts[::-1]})
+
+
 def post_detail(request, post_id):
-    template_name = 'blog/detail.html'
-    post = posts[post_id]
-    context = {'post': post}
-    return render(request, template_name, context)
+    post_dict = {}
+    for post in posts:
+        post_dict[post['id']] = post
+    post = post_dict.get(post_id)
+    if post:
+        template_name = 'blog/detail.html'
+        context = {'post': post}
+        return render(request, template_name, context)
+    else:
+        response = '<h1>Пост с таким идентификатором не найден</h1>'
+        return HttpResponseNotFound(response)
 
 
 def category_posts(request, category_slug):
