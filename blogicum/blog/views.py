@@ -45,6 +45,8 @@ posts = [
     },
 ]
 
+ALL_POSTS = {post['id']: post for post in posts}
+
 
 def index(request):
     template_name = 'blog/index.html'
@@ -52,17 +54,13 @@ def index(request):
 
 
 def post_detail(request, post_id):
-    post_dict = {}
-    for post in posts:
-        post_dict[post['id']] = post
-    post = post_dict.get(post_id)
+    post = ALL_POSTS.get(post_id)
     if post:
         template_name = 'blog/detail.html'
         context = {'post': post}
         return render(request, template_name, context)
-    else:
-        response = '<h1>Пост с таким идентификатором не найден</h1>'
-        return HttpResponseNotFound(response)
+    response = '<h1>Пост с таким идентификатором не найден</h1>'
+    return HttpResponseNotFound(response)
 
 
 def category_posts(request, category_slug):
