@@ -45,7 +45,7 @@ posts = [
     },
 ]
 
-ALL_POSTS = {post['id']: post for post in posts}
+POSTS = {post['id']: post for post in posts}
 
 
 def index(request):
@@ -54,7 +54,7 @@ def index(request):
 
 
 def post_detail(request, post_id):
-    post = ALL_POSTS.get(post_id)
+    post = POSTS.get(post_id)
     if post:
         template_name = 'blog/detail.html'
         context = {'post': post}
