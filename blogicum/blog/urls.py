@@ -1,4 +1,5 @@
 from django.urls import path
+
 from blog.views import index, post_detail, category_posts
 
 app_name = 'blog'
